@@ -42,9 +42,9 @@ using namespace conversion;
 
 
 BOOST_AUTO_TEST_CASE(StoLongLongTest) {
-  BOOST_TEST(strto<int64_t>("0", strlen("0")) == 0);
-  BOOST_TEST(strto<int64_t>("123", strlen("123")) == 123);
-  BOOST_TEST(strto<int64_t>("-123", strlen("-123")) == -123);
+  BOOST_REQUIRE(strto<int64_t>("0", strlen("0")) == 0);
+  BOOST_REQUIRE(strto<int64_t>("123", strlen("123")) == 123);
+  BOOST_REQUIRE(strto<int64_t>("-123", strlen("-123")) == -123);
 
   const char *data;
   unsigned len;
@@ -57,69 +57,69 @@ BOOST_AUTO_TEST_CASE(StoLongLongTest) {
   ptr = nullptr;
   status = OK;
   value = strto<int64_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 0);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 0);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "1234567890";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int64_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 1234567890LL);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 1234567890LL);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "9223372036854775807";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int64_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 9223372036854775807LL);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 9223372036854775807LL);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "9223372036854775808";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int64_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 9223372036854775807LL);
-  BOOST_TEST(status == IntOverflow);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 9223372036854775807LL);
+  BOOST_REQUIRE(status == IntOverflow);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "-9223372036854775808";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int64_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == (-9223372036854775807LL - 1));
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == (-9223372036854775807LL - 1));
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "-9223372036854775809";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int64_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == (-9223372036854775807LL - 1));
-  BOOST_TEST(status == IntOverflow);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == (-9223372036854775807LL - 1));
+  BOOST_REQUIRE(status == IntOverflow);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "1234567890A";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int64_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 1234567890LL);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + 10);
+  BOOST_REQUIRE(value == 1234567890LL);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + 10);
 }
 
 
 BOOST_AUTO_TEST_CASE(StoULongLongTest) {
-  BOOST_TEST(strto<uint64_t>("0", strlen("0")) == 0);
-  BOOST_TEST(strto<uint64_t>("123", strlen("123")) == 123);
+  BOOST_REQUIRE(strto<uint64_t>("0", strlen("0")) == 0);
+  BOOST_REQUIRE(strto<uint64_t>("123", strlen("123")) == 123);
 
   const char *data;
   unsigned len;
@@ -132,63 +132,63 @@ BOOST_AUTO_TEST_CASE(StoULongLongTest) {
   ptr = nullptr;
   status = OK;
   value = strto<uint64_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 0);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 0);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "1234567890";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint64_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 1234567890ULL);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 1234567890ULL);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "9223372036854775807";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint64_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 9223372036854775807ULL);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 9223372036854775807ULL);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "9223372036854775808";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint64_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 9223372036854775808ULL);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 9223372036854775808ULL);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "18446744073709551615";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint64_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 18446744073709551615ULL);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 18446744073709551615ULL);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "18446744073709551616";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint64_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 18446744073709551615ULL);
-  BOOST_TEST(status == IntOverflow);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 18446744073709551615ULL);
+  BOOST_REQUIRE(status == IntOverflow);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "1234567890A";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint64_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 1234567890LL);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + 10);
+  BOOST_REQUIRE(value == 1234567890LL);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + 10);
 
   data = "-1234567890";
   len = strlen(data);
@@ -196,16 +196,16 @@ BOOST_AUTO_TEST_CASE(StoULongLongTest) {
   status = OK;
   // VS2015 returns some huge value
 //   value = strto<uint64_t>(data, len, &ptr, 10, &status);
-//   BOOST_TEST(value == 0);
-//   BOOST_TEST(status == Failure);
-//    BOOST_TEST(ptr == data);
+//   BOOST_REQUIRE(value == 0);
+//   BOOST_REQUIRE(status == Failure);
+//    BOOST_REQUIRE(ptr == data);
 }
 
 
 BOOST_AUTO_TEST_CASE(StoIntTest) {
-  BOOST_TEST(strto<int32_t>("0", strlen("0")) == 0);
-  BOOST_TEST(strto<int32_t>("123", strlen("123")) == 123);
-  BOOST_TEST(strto<int32_t>("-123", strlen("-123")) == -123);
+  BOOST_REQUIRE(strto<int32_t>("0", strlen("0")) == 0);
+  BOOST_REQUIRE(strto<int32_t>("123", strlen("123")) == 123);
+  BOOST_REQUIRE(strto<int32_t>("-123", strlen("-123")) == -123);
 
   const char *data;
   unsigned len;
@@ -218,69 +218,69 @@ BOOST_AUTO_TEST_CASE(StoIntTest) {
   ptr = nullptr;
   status = OK;
   value = strto<int32_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 0);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 0);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "1234567890";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int32_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 1234567890);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 1234567890);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "2147483647";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int32_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 2147483647);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 2147483647);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "2147483648";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int32_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 2147483647);
-  BOOST_TEST(status == IntOverflow);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 2147483647);
+  BOOST_REQUIRE(status == IntOverflow);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "-2147483648";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int32_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == INT32_MIN);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == INT32_MIN);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "-2147483649";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int32_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == INT32_MIN);
-  BOOST_TEST(status == IntOverflow);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == INT32_MIN);
+  BOOST_REQUIRE(status == IntOverflow);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "1234567890A";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int32_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 1234567890);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + 10);
+  BOOST_REQUIRE(value == 1234567890);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + 10);
 }
 
 
 BOOST_AUTO_TEST_CASE(StoUIntTest) {
-  BOOST_TEST(strto<uint32_t>("0", strlen("0")) == 0);
-  BOOST_TEST(strto<uint32_t>("123", strlen("123")) == 123);
+  BOOST_REQUIRE(strto<uint32_t>("0", strlen("0")) == 0);
+  BOOST_REQUIRE(strto<uint32_t>("123", strlen("123")) == 123);
 
   const char *data;
   unsigned len;
@@ -293,70 +293,70 @@ BOOST_AUTO_TEST_CASE(StoUIntTest) {
   ptr = nullptr;
   status = OK;
   value = strto<uint32_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 0);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 0);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "1234567890";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint32_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 1234567890);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 1234567890);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "2147483647";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint32_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 2147483647);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 2147483647);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "2147483648";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint32_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 2147483648);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 2147483648);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "4294967295";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint32_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == UINT32_MAX);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == UINT32_MAX);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "4294967296";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint32_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == UINT32_MAX);
-  BOOST_TEST(status == IntOverflow);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == UINT32_MAX);
+  BOOST_REQUIRE(status == IntOverflow);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "1234567890A";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint32_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 1234567890);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + 10);
+  BOOST_REQUIRE(value == 1234567890);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + 10);
 }
 
 
 BOOST_AUTO_TEST_CASE(StoShortTest) {
-  BOOST_TEST(strto<int16_t>("0", strlen("0")) == 0);
-  BOOST_TEST(strto<int16_t>("123", strlen("123")) == 123);
-  BOOST_TEST(strto<int16_t>("-123", strlen("-123")) == -123);
+  BOOST_REQUIRE(strto<int16_t>("0", strlen("0")) == 0);
+  BOOST_REQUIRE(strto<int16_t>("123", strlen("123")) == 123);
+  BOOST_REQUIRE(strto<int16_t>("-123", strlen("-123")) == -123);
 
   const char *data;
   unsigned len;
@@ -369,69 +369,69 @@ BOOST_AUTO_TEST_CASE(StoShortTest) {
   ptr = nullptr;
   status = OK;
   value = strto<int16_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 0);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 0);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "12345";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int16_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 12345);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 12345);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "32767";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int16_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 32767);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 32767);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "32768";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int16_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 32767);
-  BOOST_TEST(status == IntOverflow);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 32767);
+  BOOST_REQUIRE(status == IntOverflow);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "-32768";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int16_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == INT16_MIN);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == INT16_MIN);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "-32769";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int16_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == INT16_MIN);
-  BOOST_TEST(status == IntOverflow);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == INT16_MIN);
+  BOOST_REQUIRE(status == IntOverflow);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "12345A";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int16_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 12345);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + 5);
+  BOOST_REQUIRE(value == 12345);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + 5);
 }
 
 
 BOOST_AUTO_TEST_CASE(StoUShortTest) {
-  BOOST_TEST(strto<uint16_t>("0", strlen("0")) == 0);
-  BOOST_TEST(strto<uint16_t>("123", strlen("123")) == 123);
+  BOOST_REQUIRE(strto<uint16_t>("0", strlen("0")) == 0);
+  BOOST_REQUIRE(strto<uint16_t>("123", strlen("123")) == 123);
 
   const char *data;
   unsigned len;
@@ -444,70 +444,70 @@ BOOST_AUTO_TEST_CASE(StoUShortTest) {
   ptr = nullptr;
   status = OK;
   value = strto<uint16_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 0);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 0);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "12345";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint16_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 12345);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 12345);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "32767";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint16_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 32767);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 32767);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "32768";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint16_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 32768);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 32768);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "65535";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint16_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == UINT16_MAX);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == UINT16_MAX);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "65536";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint16_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == UINT16_MAX);
-  BOOST_TEST(status == IntOverflow);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == UINT16_MAX);
+  BOOST_REQUIRE(status == IntOverflow);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "12345A";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint16_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 12345);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + 5);
+  BOOST_REQUIRE(value == 12345);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + 5);
 }
 
 
 BOOST_AUTO_TEST_CASE(StoCharTest) {
-  BOOST_TEST(strto<int8_t>("0", strlen("0")) == 0);
-  BOOST_TEST(strto<int8_t>("123", strlen("123")) == 123);
-  BOOST_TEST(strto<int8_t>("-123", strlen("-123")) == -123);
+  BOOST_REQUIRE(strto<int8_t>("0", strlen("0")) == 0);
+  BOOST_REQUIRE(strto<int8_t>("123", strlen("123")) == 123);
+  BOOST_REQUIRE(strto<int8_t>("-123", strlen("-123")) == -123);
 
   const char *data;
   unsigned len;
@@ -520,69 +520,69 @@ BOOST_AUTO_TEST_CASE(StoCharTest) {
   ptr = nullptr;
   status = OK;
   value = strto<int8_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 0);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 0);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "123";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int8_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 123);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 123);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "127";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int8_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 127);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 127);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "128";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int8_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(int(value) == 127);
-  BOOST_TEST(status == IntOverflow);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(int(value) == 127);
+  BOOST_REQUIRE(status == IntOverflow);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "-128";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int8_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(int(value) == INT8_MIN);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(int(value) == INT8_MIN);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "-129";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int8_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(int(value) == INT8_MIN);
-  BOOST_TEST(status == IntOverflow);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(int(value) == INT8_MIN);
+  BOOST_REQUIRE(status == IntOverflow);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "123A";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<int8_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(int(value) == 123);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + 3);
+  BOOST_REQUIRE(int(value) == 123);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + 3);
 }
 
 
 BOOST_AUTO_TEST_CASE(StoUCharTest) {
-  BOOST_TEST(strto<uint8_t>("0", strlen("0")) == 0);
-  BOOST_TEST(strto<uint8_t>("123", strlen("123")) == 123);
+  BOOST_REQUIRE(strto<uint8_t>("0", strlen("0")) == 0);
+  BOOST_REQUIRE(strto<uint8_t>("123", strlen("123")) == 123);
 
   const char *data;
   unsigned len;
@@ -595,62 +595,62 @@ BOOST_AUTO_TEST_CASE(StoUCharTest) {
   ptr = nullptr;
   status = OK;
   value = strto<uint8_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 0);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 0);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "123";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint8_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 123);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 123);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "127";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint8_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 127);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value == 127);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "128";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint8_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(int(value) == 128);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(int(value) == 128);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "255";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint8_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(int(value) == UINT8_MAX);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(int(value) == UINT8_MAX);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "256";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint8_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(int(value) == UINT8_MAX);
-  BOOST_TEST(status == IntOverflow);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(int(value) == UINT8_MAX);
+  BOOST_REQUIRE(status == IntOverflow);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "123A";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<uint8_t>(data, len, &ptr, 10, &status);
-  BOOST_TEST(int(value) == 123);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + 3);
+  BOOST_REQUIRE(int(value) == 123);
+  BOOST_REQUIRE(status == OK);
+  BOOST_REQUIRE(ptr == data + 3);
 }
 

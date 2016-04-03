@@ -222,19 +222,19 @@ BOOST_AUTO_TEST_CASE(ConvertDoubleTest) {
   st = convert_int(value, "", 0, 10);
 
   BOOST_REQUIRE_EQUAL(st, NaN);
-  BOOST_TEST(value == 0);
+  BOOST_REQUIRE_CLOSE(value, 0, 1E-13);
 
   value = 100;
   st = convert_int(value, "0", 1, 10);
 
   BOOST_REQUIRE_EQUAL(st, OK);
-  BOOST_TEST(value == 0);
+  BOOST_REQUIRE_CLOSE(value, 0, 1E-13);
 
   value = 100;
   st = convert_int(value, "123", 3, 10);
 
   BOOST_REQUIRE_EQUAL(st, OK);
-  BOOST_TEST(value == 123);
+  BOOST_REQUIRE_EQUAL(value, 123);
 }
 
 
@@ -245,7 +245,7 @@ BOOST_AUTO_TEST_CASE(ConvertErrorTest) {
   value = 100;
   st = convert_int(value, "", 0, 10);
   BOOST_REQUIRE_EQUAL(st, NaN);
-  BOOST_TEST(value == 0);
+  BOOST_REQUIRE_EQUAL(value, 0);
 
   value = 100;
   st = convert_int(value, "123A", 4, 10);

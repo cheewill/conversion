@@ -40,12 +40,12 @@
 using namespace conversion;
 
 
-BOOST_AUTO_TEST_CASE(StoFloatTest, *boost::unit_test::tolerance(0.0000001)) {
-  BOOST_TEST(strto<float>("0", strlen("0")) == 0);
-  BOOST_TEST(strto<float>("11.2", strlen("11.2")) == 11.2F);
-  BOOST_TEST(strto<float>("-611.213", strlen("-611.213")) == -611.213F);
-  BOOST_TEST(strto<float>("611.E12", strlen("611.E12")) == 611.E12F);
-  BOOST_TEST(strto<float>("611.E-12", strlen("611.E-12")) == 611.E-12F);
+BOOST_AUTO_TEST_CASE(StoFloatTest) {
+  BOOST_REQUIRE_CLOSE(strto<float>("0", strlen("0")), 0.F, 1E-5);
+  BOOST_REQUIRE_CLOSE(strto<float>("11.2", strlen("11.2")), 11.2F, 1E-5);
+  BOOST_REQUIRE_CLOSE(strto<float>("-611.213", strlen("-611.213")), -611.213F, 1E-5);
+  BOOST_REQUIRE_CLOSE(strto<float>("611.E12", strlen("611.E12")), 611.E12F, 1E-5);
+  BOOST_REQUIRE_CLOSE(strto<float>("611.E-12", strlen("611.E-12")), 611.E-12F, 1E-5);
 
   const char *data;
   unsigned len;
@@ -58,77 +58,77 @@ BOOST_AUTO_TEST_CASE(StoFloatTest, *boost::unit_test::tolerance(0.0000001)) {
   ptr = nullptr;
   status = OK;
   value = strto<float>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == .0F);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE_CLOSE(value, .0F, 1E-5);
+  BOOST_REQUIRE_EQUAL(status, OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "123";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<float>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 123.F);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE_CLOSE(value, 123.F, 1E-5);
+  BOOST_REQUIRE_EQUAL(status, OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "123.456";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<float>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 123.456F);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE_CLOSE(value, 123.456F, 1E-5);
+  BOOST_REQUIRE_EQUAL(status, OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "123.456e+06";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<float>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 123.456e+06F);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE_CLOSE(value, 123.456e+06F, 1E-5);
+  BOOST_REQUIRE_EQUAL(status, OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<float>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 0);
-  BOOST_TEST(status == NaN);
-  BOOST_TEST(ptr == data);
+  BOOST_REQUIRE_CLOSE(value, 0.F, 1E-5);
+  BOOST_REQUIRE_EQUAL(status, NaN);
+  BOOST_REQUIRE(ptr == data);
 
   data = "123.456e+40";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<float>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value > 0);
-  BOOST_TEST(value == std::numeric_limits<float>::infinity());
-  BOOST_TEST(status == DoubleOverflow);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value > 0);
+  BOOST_REQUIRE_EQUAL(value, std::numeric_limits<float>::infinity());
+  BOOST_REQUIRE_EQUAL(status, DoubleOverflow);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "-123.456e+40";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<float>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value < 0);
-  BOOST_TEST(value == -std::numeric_limits<float>::infinity());
-  BOOST_TEST(status == DoubleOverflow);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value < 0);
+  BOOST_REQUIRE_EQUAL(value, -std::numeric_limits<float>::infinity());
+  BOOST_REQUIRE_EQUAL(status, DoubleOverflow);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "123.456e-40";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<float>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value > 0);
+  BOOST_REQUIRE(value >= 0);
   // VS2015 returns mantissa from converted value
-  BOOST_TEST(log10(value) <= -38 + 1);
+  BOOST_REQUIRE(log10(value) <= -38 + 1);
   //  BOOST_TEST(value == std::numeric_limits<float>::min());
-  BOOST_TEST((status == DoubleUnderflow || status == OK));
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE((status == DoubleUnderflow || status == OK));
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "-123.456e-40";
   len = strlen(data);
@@ -136,31 +136,31 @@ BOOST_AUTO_TEST_CASE(StoFloatTest, *boost::unit_test::tolerance(0.0000001)) {
   status = OK;
   value = strto<float>(data, len, &ptr, 10, &status);
   // VS2015 returns value of any sign
-  BOOST_TEST(log10(abs(value)) <= -38 + 1);
+  BOOST_REQUIRE(log10(abs(value)) <= -38 + 1);
   // see n1750 7.22.1.3p10
   //  BOOST_TEST(value > 0);
   //  BOOST_TEST(value == std::numeric_limits<float>::min());
   //
-  BOOST_TEST((status == DoubleUnderflow || status == OK));
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE((status == DoubleUnderflow || status == OK));
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "-123.456e-";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<float>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == -123.456);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + 8);
+  BOOST_REQUIRE_CLOSE(value, -123.456, 1E-5);
+  BOOST_REQUIRE_EQUAL(status, OK);
+  BOOST_REQUIRE(ptr == data + 8);
 }
 
 
-BOOST_AUTO_TEST_CASE(StoDoubleTest, *boost::unit_test::tolerance(0.0000000000001)) {
-  BOOST_TEST(strto<double>("0", strlen("0")) == 0);
-  BOOST_TEST(strto<double>("11.2", strlen("11.2")) == 11.2);
-  BOOST_TEST(strto<double>("-611.213", strlen("-611.213")) == -611.213);
-  BOOST_TEST(strto<double>("611.E12", strlen("611.E12")) == 611.E12);
-  BOOST_TEST(strto<double>("611.E-12", strlen("611.E-12")) == 611.E-12);
+BOOST_AUTO_TEST_CASE(StoDoubleTest) {
+  BOOST_REQUIRE_CLOSE(strto<double>("0", strlen("0")), 0., 1E-13);
+  BOOST_REQUIRE_CLOSE(strto<double>("11.2", strlen("11.2")), 11.2, 1E-13);
+  BOOST_REQUIRE_CLOSE(strto<double>("-611.213", strlen("-611.213")), -611.213, 1E-13);
+  BOOST_REQUIRE_CLOSE(strto<double>("611.E12", strlen("611.E12")), 611.E12, 1E-13);
+  BOOST_REQUIRE_CLOSE(strto<double>("611.E-12", strlen("611.E-12")), 611.E-12, 1E-13);
 
   const char *data;
   unsigned len;
@@ -173,95 +173,95 @@ BOOST_AUTO_TEST_CASE(StoDoubleTest, *boost::unit_test::tolerance(0.0000000000001
   ptr = nullptr;
   status = OK;
   value = strto<double>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == .0);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE_CLOSE(value, .0, 1E-13);
+  BOOST_REQUIRE_EQUAL(status, OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "123";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<double>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 123.);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE_CLOSE(value, 123., 1E-13);
+  BOOST_REQUIRE_EQUAL(status, OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "123.456";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<double>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 123.456);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE_CLOSE(value, 123.456, 1E-13);
+  BOOST_REQUIRE_EQUAL(status, OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "123.456e+06";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<double>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 123.456e+06);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE_CLOSE(value, 123.456e+06, 1E-13);
+  BOOST_REQUIRE_EQUAL(status, OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<double>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 0);
-  BOOST_TEST(status == NaN);
-  BOOST_TEST(ptr == data);
+  BOOST_REQUIRE_CLOSE(value, 0., 1E-13);
+  BOOST_REQUIRE_EQUAL(status, NaN);
+  BOOST_REQUIRE(ptr == data);
 
   data = "123.456e+140";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<double>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 123.456e+140);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE_CLOSE(value, 123.456e+140, 1E-13);
+  BOOST_REQUIRE_EQUAL(status, OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "123.456e-140";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<double>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == 123.456e-140);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE_CLOSE(value, 123.456e-140, 1E-13);
+  BOOST_REQUIRE_EQUAL(status, OK);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "123.456e+309";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<double>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value > 0);
-  BOOST_TEST(value == std::numeric_limits<double>::infinity());
-  BOOST_TEST(status == DoubleOverflow);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value > 0);
+  BOOST_REQUIRE_EQUAL(value, std::numeric_limits<double>::infinity());
+  BOOST_REQUIRE_EQUAL(status, DoubleOverflow);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "-123.456e+309";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<double>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value < 0);
-  BOOST_TEST(value == -std::numeric_limits<double>::infinity());
-  BOOST_TEST(status == DoubleOverflow);
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE(value < 0);
+  BOOST_REQUIRE_EQUAL(value, -std::numeric_limits<double>::infinity());
+  BOOST_REQUIRE_EQUAL(status, DoubleOverflow);
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "123.456e-309";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<double>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value > 0);
+  BOOST_REQUIRE(value > 0);
   // VS2015 returns mantissa from converted value
-  BOOST_TEST(log10(value) <= -308 + 2);
+  BOOST_REQUIRE(log10(value) <= -308 + 2);
   //  BOOST_TEST(value == std::numeric_limits<double>::min());
-  BOOST_TEST((status == DoubleUnderflow || status == OK));
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE((status == DoubleUnderflow || status == OK));
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "-123.456e-309";
   len = strlen(data);
@@ -269,20 +269,20 @@ BOOST_AUTO_TEST_CASE(StoDoubleTest, *boost::unit_test::tolerance(0.0000000000001
   status = OK;
   value = strto<double>(data, len, &ptr, 10, &status);
   // VS2015 returns value of any sign
-  BOOST_TEST(log10(abs(value)) <= -308 + 2);
+  BOOST_REQUIRE(log10(abs(value)) <= -308 + 2);
   // see n1750 7.22.1.3p10
   //  BOOST_TEST(value > 0);
   //  BOOST_TEST(value == std::numeric_limits<double>::min());
   //
-  BOOST_TEST((status == DoubleUnderflow || status == OK));
-  BOOST_TEST(ptr == data + len);
+  BOOST_REQUIRE((status == DoubleUnderflow || status == OK));
+  BOOST_REQUIRE(ptr == data + len);
 
   data = "-123.456e-";
   len = strlen(data);
   ptr = nullptr;
   status = OK;
   value = strto<double>(data, len, &ptr, 10, &status);
-  BOOST_TEST(value == -123.456);
-  BOOST_TEST(status == OK);
-  BOOST_TEST(ptr == data + 8);
+  BOOST_REQUIRE_CLOSE(value, -123.456, 1E-13);
+  BOOST_REQUIRE_EQUAL(status, OK);
+  BOOST_REQUIRE(ptr == data + 8);
 }

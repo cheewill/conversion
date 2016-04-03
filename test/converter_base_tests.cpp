@@ -49,9 +49,9 @@ BOOST_AUTO_TEST_CASE(ConvertBinaryTest) {
   int value = 111;
   auto st = Recog.read(value);
   BOOST_REQUIRE_EQUAL(st, OK);
-  BOOST_TEST(value == 5);
+  BOOST_REQUIRE_EQUAL(value, 5);
 
-  BOOST_TEST(Recog.init("0b101").to<int>() == 5);
+  BOOST_REQUIRE_EQUAL(Recog.init("0b101").to<int>(), 5);
   BOOST_REQUIRE(Recog.success());
   BOOST_REQUIRE(Recog.get_base() == 2);
 }
