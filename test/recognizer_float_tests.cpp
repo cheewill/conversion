@@ -295,7 +295,7 @@ BOOST_AUTO_TEST_CASE(FloatTest5a) {
 BOOST_AUTO_TEST_CASE(FloatTest5b) {
   NumberRecognizer<> Recog;
 
-  auto Res = Recog.recognize("-12.e1");
+  Recog.recognize("-12.e1");
 
   BOOST_REQUIRE(Recog.get_options() == DefaultOptions);
 
@@ -381,7 +381,7 @@ BOOST_AUTO_TEST_CASE(FloatTest5b) {
 BOOST_AUTO_TEST_CASE(FloatTest7) {
   NumberRecognizer<> Recog;
 
-  auto Res = Recog.recognize("+1.2e3");
+  Recog.recognize("+1.2e3");
 
   BOOST_REQUIRE(Recog.get_options() == DefaultOptions);
 
@@ -469,7 +469,7 @@ BOOST_AUTO_TEST_CASE(FloatTest7) {
 BOOST_AUTO_TEST_CASE(FloatTest8) {
   NumberRecognizer<> Recog;
 
-  auto Res = Recog.recognize("+1.2e+3");
+  Recog.recognize("+1.2e+3");
 
   BOOST_REQUIRE(Recog.get_options() == DefaultOptions);
 
@@ -552,7 +552,7 @@ BOOST_AUTO_TEST_CASE(FloatTest8) {
 BOOST_AUTO_TEST_CASE(FloatTest9) {
   NumberRecognizer<> Recog;
 
-  auto Res = Recog.recognize("-123.456E-789");
+  Recog.recognize("-123.456E-789");
 
   BOOST_REQUIRE(Recog.get_options() == DefaultOptions);
 
@@ -640,7 +640,7 @@ BOOST_AUTO_TEST_CASE(FloatTest9) {
 BOOST_AUTO_TEST_CASE(FloatTest12) {
   NumberRecognizer<> Recog;
 
-  auto Res = Recog.recognize("-123.4567E+8E");
+  Recog.recognize("-123.4567E+8E");
 
   BOOST_REQUIRE(Recog.get_options() == DefaultOptions);
 

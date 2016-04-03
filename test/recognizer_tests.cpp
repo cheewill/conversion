@@ -44,7 +44,7 @@ using namespace conversion;
 BOOST_AUTO_TEST_CASE(PartialTest2a) {
   NumberRecognizer<> Recog;
 
-  auto Res = Recog.recognize("+0R");
+  Recog.recognize("+0R");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 10);
   BOOST_REQUIRE(Recog.recognized());
   BOOST_REQUIRE(!Recog.success());
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(PartialTest2a) {
 BOOST_AUTO_TEST_CASE(PartialTest3) {
   NumberRecognizer<> Recog;
 
-  auto Res = Recog.recognize("+0  R");
+  Recog.recognize("+0  R");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 10);
   BOOST_REQUIRE(Recog.recognized());
   BOOST_REQUIRE(!Recog.success());
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE(PartialTest3) {
 BOOST_AUTO_TEST_CASE(BinaryTest1) {
   NumberRecognizer<> Recog;
 
-  auto Res = Recog.recognize("0b101");
+  Recog.recognize("0b101");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 10);
   BOOST_REQUIRE(Recog.recognized());
   BOOST_REQUIRE(!Recog.success());
@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE(BinaryTest1) {
 
   Recog.set_options(Prefix0b);
 
-  Res = Recog.recognize("0b101");
+  Recog.recognize("0b101");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 2);
   BOOST_REQUIRE(Recog.recognized());
   BOOST_REQUIRE(Recog.success());
@@ -194,7 +194,7 @@ BOOST_AUTO_TEST_CASE(BinaryTest1) {
 BOOST_AUTO_TEST_CASE(BinaryTest2) {
   NumberRecognizer<> Recog(Prefix0b);
 
-  auto Res = Recog.recognize("0b0101");
+  Recog.recognize("0b0101");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 2);
   BOOST_REQUIRE(Recog.recognized());
   BOOST_REQUIRE(Recog.success());
@@ -235,7 +235,7 @@ BOOST_AUTO_TEST_CASE(BinaryTest2) {
 BOOST_AUTO_TEST_CASE(BinaryTest3) {
   NumberRecognizer<> Recog(Prefix0b);
 
-  auto Res = Recog.recognize("0b101201");
+  Recog.recognize("0b101201");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 2);
   BOOST_REQUIRE(Recog.partial());
 
@@ -265,7 +265,7 @@ BOOST_AUTO_TEST_CASE(BinaryTest3) {
 BOOST_AUTO_TEST_CASE(BinaryTest4) {
   NumberRecognizer<> Recog(Prefix0b);
 
-  auto Res = Recog.recognize("0b201");
+  Recog.recognize("0b201");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 10);
   BOOST_REQUIRE(Recog.partial());
 
@@ -295,7 +295,7 @@ BOOST_AUTO_TEST_CASE(BinaryTest4) {
 BOOST_AUTO_TEST_CASE(BinaryTest5) {
   NumberRecognizer<> Recog(Prefix0b);
 
-  auto Res = Recog.recognize("0b");
+  Recog.recognize("0b");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 10);
   BOOST_REQUIRE(Recog.partial());
 
@@ -325,7 +325,7 @@ BOOST_AUTO_TEST_CASE(BinaryTest5) {
 BOOST_AUTO_TEST_CASE(OctalTest1) {
   NumberRecognizer<> Recog;
 
-  auto Res = Recog.recognize("0o101");
+  Recog.recognize("0o101");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 10);
   BOOST_REQUIRE(Recog.recognized());
   BOOST_REQUIRE(!Recog.success());
@@ -349,7 +349,7 @@ BOOST_AUTO_TEST_CASE(OctalTest1) {
 
   Recog.set_options(Prefix0o);
 
-  Res = Recog.recognize("0o377");
+  Recog.recognize("0o377");
   BOOST_REQUIRE(Recog.success());
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 8);
   BOOST_REQUIRE(Recog.success());
@@ -392,7 +392,7 @@ BOOST_AUTO_TEST_CASE(OctalTest1) {
 BOOST_AUTO_TEST_CASE(OctalTest2) {
   NumberRecognizer<> Recog(Prefix0o);
 
-  auto Res = Recog.recognize("0o0345");
+  Recog.recognize("0o0345");
   BOOST_REQUIRE(Recog.success());
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 8);
   BOOST_REQUIRE(Recog.success());
@@ -435,7 +435,7 @@ BOOST_AUTO_TEST_CASE(OctalTest2) {
 BOOST_AUTO_TEST_CASE(OctalTest3) {
   NumberRecognizer<> Recog(Prefix0o);
 
-  auto Res = Recog.recognize("0o56780");
+  Recog.recognize("0o56780");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 8);
   BOOST_REQUIRE(Recog.partial());
 
@@ -465,7 +465,7 @@ BOOST_AUTO_TEST_CASE(OctalTest3) {
 BOOST_AUTO_TEST_CASE(OctalTest4) {
   NumberRecognizer<> Recog(Prefix0o);
 
-  auto Res = Recog.recognize("0o877");
+  Recog.recognize("0o877");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 10);
   BOOST_REQUIRE(Recog.partial());
 
@@ -495,7 +495,7 @@ BOOST_AUTO_TEST_CASE(OctalTest4) {
 BOOST_AUTO_TEST_CASE(OctalTest5) {
   NumberRecognizer<> Recog(Prefix0o);
 
-  auto Res = Recog.recognize("0o");
+  Recog.recognize("0o");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 10);
   BOOST_REQUIRE(Recog.partial());
 
@@ -525,7 +525,7 @@ BOOST_AUTO_TEST_CASE(OctalTest5) {
 BOOST_AUTO_TEST_CASE(OctalTest1a) {
   NumberRecognizer<> Recog;
 
-  auto Res = Recog.recognize("0q101");
+  Recog.recognize("0q101");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 10);
   BOOST_REQUIRE(Recog.recognized());
   BOOST_REQUIRE(!Recog.success());
@@ -549,7 +549,7 @@ BOOST_AUTO_TEST_CASE(OctalTest1a) {
 
   Recog.set_options(Prefix0q);
 
-  Res = Recog.recognize("0Q377");
+  Recog.recognize("0Q377");
   BOOST_REQUIRE(Recog.success());
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 8);
   BOOST_REQUIRE(Recog.success());
@@ -592,7 +592,7 @@ BOOST_AUTO_TEST_CASE(OctalTest1a) {
 BOOST_AUTO_TEST_CASE(OctalTest2a) {
   NumberRecognizer<> Recog(Prefix0q);
 
-  auto Res = Recog.recognize("0q0345");
+  Recog.recognize("0q0345");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 8);
   BOOST_REQUIRE(Recog.recognized());
   BOOST_REQUIRE(Recog.success());
@@ -633,7 +633,7 @@ BOOST_AUTO_TEST_CASE(OctalTest2a) {
 BOOST_AUTO_TEST_CASE(OctalTest3a) {
   NumberRecognizer<> Recog(Prefix0q);
 
-  auto Res = Recog.recognize("0Q56780");
+  Recog.recognize("0Q56780");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 8);
   BOOST_REQUIRE(Recog.partial());
 
@@ -663,7 +663,7 @@ BOOST_AUTO_TEST_CASE(OctalTest3a) {
 BOOST_AUTO_TEST_CASE(OctalTest4a) {
   NumberRecognizer<> Recog(Prefix0q);
 
-  auto Res = Recog.recognize("0q877");
+  Recog.recognize("0q877");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 10);
   BOOST_REQUIRE(Recog.partial());
 
@@ -693,7 +693,7 @@ BOOST_AUTO_TEST_CASE(OctalTest4a) {
 BOOST_AUTO_TEST_CASE(OctalTest5a) {
   NumberRecognizer<> Recog(Prefix0q);
 
-  auto Res = Recog.recognize("0Q");
+  Recog.recognize("0Q");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 10);
   BOOST_REQUIRE(Recog.partial());
 
@@ -723,7 +723,7 @@ BOOST_AUTO_TEST_CASE(OctalTest5a) {
 BOOST_AUTO_TEST_CASE(OctalTest1b) {
   NumberRecognizer<> Recog;
 
-  auto Res = Recog.recognize("0377");
+  Recog.recognize("0377");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 10);
   BOOST_REQUIRE(Recog.recognized());
   BOOST_REQUIRE(Recog.success());
@@ -745,7 +745,7 @@ BOOST_AUTO_TEST_CASE(OctalTest1b) {
 
   Recog.set_options(Prefix0);
 
-  Res = Recog.recognize("0377");
+  Recog.recognize("0377");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 8);
   BOOST_REQUIRE(Recog.recognized());
   BOOST_REQUIRE(Recog.success());
@@ -783,7 +783,7 @@ BOOST_AUTO_TEST_CASE(OctalTest1b) {
 BOOST_AUTO_TEST_CASE(OctalTest2b) {
   NumberRecognizer<> Recog(Prefix0);
 
-  auto Res = Recog.recognize("0345");
+  Recog.recognize("0345");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 8);
   BOOST_REQUIRE(Recog.recognized());
   BOOST_REQUIRE(Recog.success());
@@ -824,7 +824,7 @@ BOOST_AUTO_TEST_CASE(OctalTest2b) {
 BOOST_AUTO_TEST_CASE(OctalTest3b) {
   NumberRecognizer<> Recog(Prefix0);
 
-  auto Res = Recog.recognize("056780");
+  Recog.recognize("056780");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 8);
   BOOST_REQUIRE(Recog.partial());
 
@@ -854,7 +854,7 @@ BOOST_AUTO_TEST_CASE(OctalTest3b) {
 BOOST_AUTO_TEST_CASE(HexTest1) {
   NumberRecognizer<> Recog;
 
-  auto Res = Recog.recognize("0x1234");
+  Recog.recognize("0x1234");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 10);
   BOOST_REQUIRE(Recog.recognized());
   BOOST_REQUIRE(!Recog.success());
@@ -878,7 +878,7 @@ BOOST_AUTO_TEST_CASE(HexTest1) {
 
   Recog.set_options(Prefix0x);
 
-  Res = Recog.recognize("0x1234");
+  Recog.recognize("0x1234");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 16);
   BOOST_REQUIRE(Recog.recognized());
   BOOST_REQUIRE(Recog.success());
@@ -919,7 +919,7 @@ BOOST_AUTO_TEST_CASE(HexTest1) {
 BOOST_AUTO_TEST_CASE(HexTest2) {
   NumberRecognizer<> Recog(Prefix0x);
 
-  auto Res = Recog.recognize("0x0345");
+  Recog.recognize("0x0345");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 16);
   BOOST_REQUIRE(Recog.recognized());
   BOOST_REQUIRE(Recog.success());
@@ -960,7 +960,7 @@ BOOST_AUTO_TEST_CASE(HexTest2) {
 BOOST_AUTO_TEST_CASE(HexTest3) {
   NumberRecognizer<> Recog(Prefix0x);
 
-  auto Res = Recog.recognize("0x56AFG0");
+  Recog.recognize("0x56AFG0");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 16);
   BOOST_REQUIRE(Recog.partial());
 
@@ -990,7 +990,7 @@ BOOST_AUTO_TEST_CASE(HexTest3) {
 BOOST_AUTO_TEST_CASE(HexTest4) {
   NumberRecognizer<> Recog(Prefix0x);
 
-  auto Res = Recog.recognize("0xG87");
+  Recog.recognize("0xG87");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 10);
   BOOST_REQUIRE(Recog.partial());
 
@@ -1020,7 +1020,7 @@ BOOST_AUTO_TEST_CASE(HexTest4) {
 BOOST_AUTO_TEST_CASE(HexTest5) {
   NumberRecognizer<> Recog(Prefix0x);
 
-  auto Res = Recog.recognize("0x");
+  Recog.recognize("0x");
   BOOST_REQUIRE_EQUAL(Recog.get_base(), 10);
   BOOST_REQUIRE(Recog.partial());
 

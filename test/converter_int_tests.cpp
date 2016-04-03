@@ -603,7 +603,7 @@ BOOST_AUTO_TEST_CASE(IntValuesTest3) {
   BOOST_REQUIRE(Recog.get_status() == OK);
 
   long double lval = Recog.init("9223372036854775807").to<long double>();
-  BOOST_REQUIRE_CLOSE(val, 9223372036854775807., 0.0000000000001);
+  BOOST_REQUIRE_CLOSE(lval, 9223372036854775807., 0.0000000000001);
   BOOST_REQUIRE(Recog.get_status() == OK);
 
   val = Recog.init("18446744073709551615").to<double>();
@@ -611,6 +611,6 @@ BOOST_AUTO_TEST_CASE(IntValuesTest3) {
   BOOST_REQUIRE(Recog.get_status() == OK);
 
   lval = Recog.init("18446744073709551615").to<long double>();
-  BOOST_REQUIRE_CLOSE(val, 18446744073709551615., 0.0000000000001);
+  BOOST_REQUIRE_CLOSE(lval, 18446744073709551615., 0.0000000000001);
   BOOST_REQUIRE(Recog.get_status() == OK);
 }
