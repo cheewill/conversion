@@ -26,12 +26,7 @@ set(BOOST_LIBRARYDIR "" CACHE PATH "Path to boost libraries")
 if(WIN32)
   set(Boost_USE_STATIC_LIBS ON)
 endif()
-
-find_package(
-  Boost
-  REQUIRED
-  COMPONENTS unit_test_framework
-)
+find_package(Boost 1.56)
 
 set(Conversion_include "${CMAKE_CURRENT_SOURCE_DIR}/include")
 include_directories(${Conversion_include})
@@ -40,4 +35,9 @@ if(NOT WIN32)
 endif()
 
 add_subdirectory(src)
-add_subdirectory(test)
+if (Boost_found)
+  add_subdirectory(test)
+else()
+  message(STATUS "Conversion unit tests are skipped as Boost library is not found")
+endif()
+

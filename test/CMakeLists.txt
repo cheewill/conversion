@@ -1,3 +1,9 @@
+find_package(
+  Boost 1.56
+  REQUIRED
+  COMPONENTS unit_test_framework
+)
+
 add_executable(ConversionTests
   test_runner.cpp
   strtoint_tests.cpp
