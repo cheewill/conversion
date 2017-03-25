@@ -1,10 +1,4 @@
-find_package(
-  Boost 1.56
-  REQUIRED
-  COMPONENTS unit_test_framework
-)
-
-add_executable(ConversionTests
+make_component_tests(conversion
   test_runner.cpp
   strtoint_tests.cpp
   strtofloat_tests.cpp
@@ -21,21 +15,3 @@ add_executable(ConversionTests
   converter_int_tests.cpp
   converter_float_tests.cpp
 )
-add_dependencies(ConversionTests Conversion)
-set_target_properties(ConversionTests PROPERTIES FOLDER "${Conversion_test_folder}")
-
-include_directories(${Boost_INCLUDE_DIR})
-target_link_libraries (ConversionTests ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
-# Turn on exceptions for unit tests.
-if(WIN32)
-  set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /EHsc" )
-else()
-  set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -fexceptions" )
-endif()
-
-set(Conversion_test_location $<TARGET_FILE:ConversionToolsTests>)
-add_custom_target(check-conversion
-  COMMAND ${conversion_test_location}
-  DEPENDS ConversionTests
-)
-set_target_properties(check-conversion PROPERTIES FOLDER "${Conversion_test_folder}")

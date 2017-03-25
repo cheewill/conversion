@@ -1,43 +1,78 @@
 cmake_minimum_required(VERSION 3.3)
 
-if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")
-  # Standalone project
-  message(STATUS "Library 'conversion' is built as a standalone project")
-  project(Conversion)
-  set(Conversion_library_folder "library")
-  set(Conversion_test_folder "unit tests")
+# --------------------------------------------
+# Load CMake definitions for component support
+#
+
+# First try to load component support from sibling directory. If these sources
+# are part of existing project, they must be placed in the project source tree
+# that looks like:
+#
+# ...
+# \- <directory-for-components>
+#    \-component.cmake
+#    \-<this-library-directory>
+#      \-<this CMakeLists.txt>
+#
+# If sibling directory 'component.cmake' does not exist, use local copy.
+#
+if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../component.cmake/main.cmake)
+  include(${CMAKE_CURRENT_SOURCE_DIR}/../component.cmake/main.cmake)
 else()
-  # Part of another project
-  message(STATUS "Library 'conversion' is built as a part of another project")
-  if (NOT DEFINED EXTERNAL_LIBRARY_FOLDER)
-    set(Conversion_library_folder "external libraries")
-  else()
-    set(Conversion_library_folder "${EXTERNAL_LIBRARY_FOLDER}")
+  include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/main.cmake)
+endif()
+
+#
+# --------------------------------------------
+
+# --------------------------------------------
+# Tune component
+#
+
+set(COMPONENT_Conversion_NEEDS_UNITTESTS "ON")
+
+#
+# --------------------------------------------
+
+# --------------------------------------------
+# Set up boost component
+#
+
+if (COMPONENT_Conversion_NEEDS_UNITTESTS)
+  set(BOOST_ROOT "" CACHE PATH "Path to boost includes")
+  set(BOOST_LIBRARYDIR "" CACHE PATH "Path to boost libraries")
+  if(WIN32)
+    set(Boost_USE_STATIC_LIBS ON)
   endif()
-  if (NOT DEFINED EXTERNAL_LIBRARY_TEST_FOLDER)
-    set(Conversion_test_folder "external libraries tests")
+
+  find_package(
+    Boost 1.56
+    COMPONENTS unit_test_framework
+  )
+  if (Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIR})
+    get_filename_component(boost_library_path "${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}" DIRECTORY)
+    link_directories(${boost_library_path})
   else()
-    set(Conversion_test_folder "${EXTERNAL_LIBRARY_TEST_FOLDER}")
+    message(STATUS "No unit tests for component Conversion as Boost is not found")
+    unset(COMPONENT_Conversion_NEEDS_UNITTESTS)
   endif()
 endif()
 
-set(BOOST_ROOT "" CACHE PATH "Path to boost includes")
-set(BOOST_LIBRARYDIR "" CACHE PATH "Path to boost libraries")
-if(WIN32)
-  set(Boost_USE_STATIC_LIBS ON)
-endif()
-find_package(Boost 1.56)
+#
+# --------------------------------------------
 
-set(Conversion_include "${CMAKE_CURRENT_SOURCE_DIR}/include")
-include_directories(${Conversion_include})
-if(NOT WIN32)
-  set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11" )
+# --------------------------------------------
+# Set up component
+#
+
+make_component_project(conversion)
+
+if (MSVC)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 endif()
 
 add_subdirectory(src)
-if (Boost_found)
+if (COMPONENT_Conversion_NEEDS_UNITTESTS)
   add_subdirectory(test)
-else()
-  message(STATUS "Conversion unit tests are skipped as Boost library is not found")
 endif()
-
