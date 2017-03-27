@@ -803,9 +803,9 @@ public:
 
     // Convert text to number.
     double dvalue = strto<double>(begin_number(), get_number_length());
-    int res = OK;
-    value = convert_to<NumType>(dvalue, &res);
-    return static_cast<Status>(status = res);
+    auto res = convert_to<NumType>(dvalue);
+    value = res.value();
+    return static_cast<Status>(status = res.status());
   }
 
   template<typename NumType>

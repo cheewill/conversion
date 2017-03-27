@@ -264,7 +264,7 @@ BOOST_AUTO_TEST_CASE(StoIntTest) {
   status = OK;
   value = strto<int32_t>(data, len, &ptr, 10, &status);
   BOOST_REQUIRE(value == INT32_MIN);
-  BOOST_REQUIRE(status == IntOverflow);
+  BOOST_REQUIRE(status == IntOverflowNegative);
   BOOST_REQUIRE(ptr == data + len);
 
   data = "1234567890A";
@@ -415,7 +415,7 @@ BOOST_AUTO_TEST_CASE(StoShortTest) {
   status = OK;
   value = strto<int16_t>(data, len, &ptr, 10, &status);
   BOOST_REQUIRE(value == INT16_MIN);
-  BOOST_REQUIRE(status == IntOverflow);
+  BOOST_REQUIRE(status == IntOverflowNegative);
   BOOST_REQUIRE(ptr == data + len);
 
   data = "12345A";
@@ -566,7 +566,7 @@ BOOST_AUTO_TEST_CASE(StoCharTest) {
   status = OK;
   value = strto<int8_t>(data, len, &ptr, 10, &status);
   BOOST_REQUIRE(int(value) == INT8_MIN);
-  BOOST_REQUIRE(status == IntOverflow);
+  BOOST_REQUIRE(status == IntOverflowNegative);
   BOOST_REQUIRE(ptr == data + len);
 
   data = "123A";

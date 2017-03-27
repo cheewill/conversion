@@ -46,19 +46,27 @@ namespace internal {
 /// \brief Helper class for calculation of minimal value for the given integer
 /// type.
 ///
+/// \tparam NumType Numeric type (integer of float).
+/// \tparam IsInteger True if NumType is integer type, false if float.
+///
+/// The class has a method \c get that returns the minimal value of NumType.
+/// It is introduced because <tt>std::numeric_limits<T>::min()</tt> returns
+/// minimal absolute value for float type, but minimal algebraic value for
+/// integer types.
+///
 template<typename NumType, bool IsInteger>
 class MinValue;
 
 template<typename NumType>
 class MinValue<NumType, true> {
 public:
-  static NumType get() { return std::numeric_limits<NumType>::min(); }
+  static constexpr NumType get() { return std::numeric_limits<NumType>::min(); }
 };
 
 template<typename NumType>
 class MinValue<NumType, false> {
 public:
-  static NumType get() { return -std::numeric_limits<NumType>::max(); }
+  static constexpr NumType get() { return -std::numeric_limits<NumType>::max(); }
 };
 
 }

@@ -193,10 +193,13 @@ NumberType strto(const ChT *str, unsigned len, ChT **endp = nullptr,
   int local_status = OK;
   wider_type wide_value = strto<wider_type, ChT>(str, len, endp, base,
                                                  &local_status);
-  NumberType value = convert_to<NumberType>(wide_value, &local_status);
+  auto result = convert_to<NumberType>(wide_value);
   if (status)
-    *status = local_status;
-  return value;
+    if (local_status != OK)
+      *status = local_status;
+    else
+      *status = result.status();
+  return result.value();
 }
 
 
