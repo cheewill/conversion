@@ -59,8 +59,10 @@ enum Status : unsigned {
 };
 
 
-/// \brief Helper class that packs represents both the converted value and the
+/// \brief Helper class that represents both the converted value and the
 /// conversion status.
+///
+/// \tparam NumType Type of the value stored in this class.
 ///
 template<typename NumType>
 class Result {
@@ -116,10 +118,10 @@ class Narrowing<DType, SType, true, true> {
 public:
 
   static constexpr Result<DType> convert(const SType &x) {
-    return x > static_cast<SType>(std::numeric_limits<DType>::max())
+    return x > std::numeric_limits<DType>::max()
            ? Result<DType>(std::numeric_limits<DType>::max(),
                            Status::IntOverflow)
-           : (x < static_cast<SType>(std::numeric_limits<DType>::min())
+           : (x < std::numeric_limits<DType>::min()
               ? Result<DType>(std::numeric_limits<DType>::min(),
                               Status::IntOverflowNegative)
               : Result<DType>(static_cast<DType>(x)));
@@ -186,10 +188,10 @@ class ConvertToFloat {
   static_assert(std::numeric_limits<SType>::is_integer, "Must be integer");
 public:
   static constexpr Result<DType> convert(const SType &x) {
-    return x > static_cast<SType>(std::numeric_limits<DType>::max())
+    return x > std::numeric_limits<DType>::max()
       ? Result<DType>(std::numeric_limits<DType>::max(),
                       Status::DoubleOverflow)
-      : (x < static_cast<SType>(std::numeric_limits<DType>::min())
+      : (x < std::numeric_limits<DType>::min()
          ? Result<DType>(std::numeric_limits<DType>::min(),
                          Status::DoubleOverflow)
          : Result<DType>(static_cast<DType>(x)));
@@ -260,9 +262,11 @@ public:
 //------------------------------------------------------------------------------
 /// \brief Converts the specified value to the given type.
 ///
-/// \tparam DestType Destination type.
-/// \tparam SrcType Source type.
-/// \param x Value to convert.
+/// \tparam SrcType  Type of converted value.
+/// \tparam DestType Type of resulting value.
+///
+/// \param x      Converted value.
+/// \param status Pointer to status value. May be nullptr.
 /// \returns Converted value with status of conversion.
 //------------------------------------------------------------------------------
 template<typename DestType, typename SrcType>
