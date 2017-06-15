@@ -1,4 +1,5 @@
 make_component_tests(conversion
+  convert_to_tests.cpp
   test_runner.cpp
   strtoint_tests.cpp
   strtofloat_tests.cpp
