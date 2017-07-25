@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(SCharToUCharTests) {
   BOOST_REQUIRE_EQUAL(Res.value(), unsigned char(10));
 
   const signed char V2 = (signed char)-10;
-  Res = convert_to<unsigned char>(V);
+  Res = convert_to<unsigned char>(V2);
 
   BOOST_REQUIRE_EQUAL(Res.status(), Status::IntOverflowNegative);
   BOOST_REQUIRE(!Res.ok());
@@ -748,4 +748,417 @@ BOOST_AUTO_TEST_CASE(IntToLongDoubleTests) {
   BOOST_REQUIRE(!Res.overflow());
   BOOST_REQUIRE(!Res.underflow());
   BOOST_REQUIRE_EQUAL(Res.value(), long double(10));
+}
+
+BOOST_AUTO_TEST_CASE(IntOverflow_I8toI8Tests) {
+  const signed char i8 = -120;
+  auto Res = convert_to<signed char>(i8);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), signed char(-120));
+
+  const signed char i8a = -128;
+  Res = convert_to<signed char>(i8a);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), signed char(-128));
+
+  const signed char i8b = 127;
+  Res = convert_to<signed char>(i8b);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), signed char(127));
+}
+
+BOOST_AUTO_TEST_CASE(IntOverflow_U8toU8Tests) {
+  const unsigned char u8 = 250;
+  auto Res = convert_to<unsigned char>(u8);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), unsigned char(250));
+
+  const unsigned char u8a = 255;
+  Res = convert_to<unsigned char>(u8a);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), unsigned char(255));
+
+  const unsigned char u8b = 0;
+  Res = convert_to<unsigned char>(u8b);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), unsigned char(0));
+}
+
+BOOST_AUTO_TEST_CASE(IntOverflow_I8toU8Tests) {
+  const signed char i8 = -120;
+  auto Res = convert_to<unsigned char>(i8);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::IntOverflowNegative);
+  BOOST_REQUIRE(!Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), unsigned char(0));
+
+  const signed char i8a = 127;
+  Res = convert_to<unsigned char>(i8a);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), unsigned char(127));
+
+  const signed char i8b = 0;
+  Res = convert_to<unsigned char>(i8b);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), unsigned char(0));
+}
+
+BOOST_AUTO_TEST_CASE(IntOverflow_U8toI8Tests) {
+  const unsigned char u8 = 250;
+  auto Res = convert_to<signed char>(u8);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::IntOverflow);
+  BOOST_REQUIRE(!Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), signed char(127));
+
+  const unsigned char u8a = 127;
+  Res = convert_to<signed char>(u8a);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), signed char(127));
+
+  const unsigned char u8b = 0;
+  Res = convert_to<signed char>(u8b);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), signed char(0));
+}
+
+BOOST_AUTO_TEST_CASE(IntOverflow_I8toI32_Tests) {
+  const signed char i8 = -120;
+  auto Res = convert_to<int>(i8);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), -120);
+
+  const signed char i8a = 127;
+  Res = convert_to<int>(i8a);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), 127);
+
+  const signed char i8b = -128;
+  Res = convert_to<int>(i8b);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), -128);
+}
+
+BOOST_AUTO_TEST_CASE(IntOverflow_I32toI8_Tests) {
+  auto Res = convert_to<signed char>(2000);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::IntOverflow);
+  BOOST_REQUIRE(!Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), signed char(127));
+
+  Res = convert_to<signed char>(127);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), signed char(127));
+
+  Res = convert_to<signed char>(-2000);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::IntOverflowNegative);
+  BOOST_REQUIRE(!Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), signed char(-128));
+
+  Res = convert_to<signed char>(-126);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), signed char(-126));
+
+  Res = convert_to<signed char>(-128);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), signed char(-128));
+}
+
+BOOST_AUTO_TEST_CASE(IntOverflow_I8toU32_Tests) {
+  const signed char i8 = -120;
+  auto Res = convert_to<unsigned>(i8);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::IntOverflowNegative);
+  BOOST_REQUIRE(!Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), unsigned(0));
+
+  const signed char i8a = 127;
+  Res = convert_to<unsigned>(i8a);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), unsigned(127));
+
+  const signed char i8b = 0;
+  Res = convert_to<unsigned>(i8b);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), unsigned(0));
+}
+
+BOOST_AUTO_TEST_CASE(IntOverflow_U32toI8_Tests) {
+  auto Res = convert_to<signed char>(2000U);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::IntOverflow);
+  BOOST_REQUIRE(!Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), signed char(127));
+
+  Res = convert_to<signed char>(127U);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), signed char(127));
+
+  Res = convert_to<signed char>(0U);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), signed char(0));
+}
+
+BOOST_AUTO_TEST_CASE(IntOverflow_I32toU8_Tests) {
+  auto Res = convert_to<unsigned char>(2000);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::IntOverflow);
+  BOOST_REQUIRE(!Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), unsigned char(255));
+
+  Res = convert_to<unsigned char>(255);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), unsigned char(255));
+
+  Res = convert_to<unsigned char>(-1);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::IntOverflowNegative);
+  BOOST_REQUIRE(!Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), unsigned char(0));
+
+  Res = convert_to<unsigned char>(0);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), unsigned char(0));
+}
+
+BOOST_AUTO_TEST_CASE(IntOverflow_U8toI32_Tests) {
+  const unsigned char u8 = 0;
+  auto Res = convert_to<int>(u8);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), 0);
+
+  const unsigned char u8a = 255;
+  Res = convert_to<int>(u8a);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), 255);
+}
+
+BOOST_AUTO_TEST_CASE(IntOverflow_U8toU32_Tests) {
+  const unsigned char u8 = 0;
+  auto Res = convert_to<unsigned>(u8);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), 0U);
+
+  const unsigned char u8a = 255;
+  Res = convert_to<unsigned>(u8a);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), 255U);
+}
+
+BOOST_AUTO_TEST_CASE(IntOverflow_U32toU8_Tests) {
+  auto Res = convert_to<unsigned char>(2000U);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::IntOverflow);
+  BOOST_REQUIRE(!Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), unsigned char(255));
+
+  Res = convert_to<unsigned char>(255U);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), 255U);
+
+  Res = convert_to<unsigned char>(0U);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::OK);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), 0U);
+}
+
+BOOST_AUTO_TEST_CASE(DoubleToI32_Tests) {
+  auto Res = convert_to<int>(2000.5);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::DoubleToInt);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), 2000);
+
+  Res = convert_to<int>(1E66);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::IntOverflow);
+  BOOST_REQUIRE(!Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), std::numeric_limits<int>::max());
+
+  Res = convert_to<int>(-1E66);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::IntOverflowNegative);
+  BOOST_REQUIRE(!Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), std::numeric_limits<int>::min());
+
+  Res = convert_to<int>(0.1);
+
+  BOOST_REQUIRE_EQUAL(Res.status(), Status::DoubleToInt);
+  BOOST_REQUIRE(Res.ok());
+  BOOST_REQUIRE(!Res.bad());
+  BOOST_REQUIRE(!Res.overflow());
+  BOOST_REQUIRE(!Res.underflow());
+  BOOST_REQUIRE_EQUAL(Res.value(), 0);
 }

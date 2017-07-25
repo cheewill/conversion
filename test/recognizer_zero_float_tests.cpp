@@ -1,6 +1,6 @@
 //===--- recognizer_zero_float_tests.cpp ------------------------*- C++ -*-===//
 //
-// Copyright(c) 2016, Serge Pavlov.
+// Copyright(c) 2016-2017, Serge Pavlov.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -119,25 +119,25 @@ BOOST_AUTO_TEST_CASE(ZeroTest9) {
   auto nr = Recog.number_text();
   BOOST_REQUIRE(std::equal(nr.begin(), nr.end(), "0."));
 
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE(Recog.to<int>() == 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   Recog.init("0.");
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
   int value = 111;
   BOOST_REQUIRE(Recog.read(value) == OK);
   BOOST_REQUIRE_EQUAL(value, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   long long llvalue = 111;
   BOOST_REQUIRE(Recog.init("0.").read(llvalue) == OK);
   BOOST_REQUIRE_EQUAL(llvalue, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE_EQUAL(Recog.init("0.").to<double>(), 0.0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 }
 
 
@@ -218,25 +218,25 @@ BOOST_AUTO_TEST_CASE(ZeroTest10) {
   auto nr = Recog.number_text();
   BOOST_REQUIRE(std::equal(nr.begin(), nr.end(), ".0"));
 
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE(Recog.to<int>() == 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   Recog.init(".0");
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
   int value = 111;
   BOOST_REQUIRE(Recog.read(value) == OK);
   BOOST_REQUIRE_EQUAL(value, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   long long llvalue = 111;
   BOOST_REQUIRE(Recog.init(".0").read(llvalue) == OK);
   BOOST_REQUIRE_EQUAL(llvalue, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE_EQUAL(Recog.init(".0").to<double>(), 0.0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 }
 
 
@@ -318,25 +318,25 @@ BOOST_AUTO_TEST_CASE(ZeroTest11) {
   auto nr = Recog.number_text();
   BOOST_REQUIRE(std::equal(nr.begin(), nr.end(), "0.0"));
 
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE(Recog.to<int>() == 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   Recog.init("0.0");
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
   int value = 111;
   BOOST_REQUIRE(Recog.read(value) == OK);
   BOOST_REQUIRE_EQUAL(value, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   long long llvalue = 111;
   BOOST_REQUIRE(Recog.init("0.0").read(llvalue) == OK);
   BOOST_REQUIRE_EQUAL(llvalue, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE_EQUAL(Recog.init("0.0").to<double>(), 0.0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 }
 
 
@@ -418,25 +418,25 @@ BOOST_AUTO_TEST_CASE(ZeroTest12) {
   auto nr = Recog.number_text();
   BOOST_REQUIRE(std::equal(nr.begin(), nr.end(), "00."));
 
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE(Recog.to<int>() == 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   Recog.init("00.");
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
   int value = 111;
   BOOST_REQUIRE(Recog.read(value) == OK);
   BOOST_REQUIRE_EQUAL(value, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   long long llvalue = 111;
   BOOST_REQUIRE(Recog.init("00.").read(llvalue) == OK);
   BOOST_REQUIRE_EQUAL(llvalue, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE_EQUAL(Recog.init("00.").to<double>(), 0.0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 }
 
 
@@ -517,25 +517,25 @@ BOOST_AUTO_TEST_CASE(ZeroTest13) {
   auto nr = Recog.number_text();
   BOOST_REQUIRE(std::equal(nr.begin(), nr.end(), ".00"));
 
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE(Recog.to<int>() == 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   Recog.init(".00");
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
   int value = 111;
   BOOST_REQUIRE(Recog.read(value) == OK);
   BOOST_REQUIRE_EQUAL(value, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   long long llvalue = 111;
   BOOST_REQUIRE(Recog.init(".00").read(llvalue) == OK);
   BOOST_REQUIRE_EQUAL(llvalue, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE_EQUAL(Recog.init(".00").to<double>(), 0.0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 }
 
 
@@ -617,25 +617,25 @@ BOOST_AUTO_TEST_CASE(ZeroTest14) {
   auto nr = Recog.number_text();
   BOOST_REQUIRE(std::equal(nr.begin(), nr.end(), "00.0"));
 
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE(Recog.to<int>() == 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   Recog.init("00.0");
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
   int value = 111;
   BOOST_REQUIRE(Recog.read(value) == OK);
   BOOST_REQUIRE_EQUAL(value, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   long long llvalue = 111;
   BOOST_REQUIRE(Recog.init("00.0").read(llvalue) == OK);
   BOOST_REQUIRE_EQUAL(llvalue, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE_EQUAL(Recog.init("00.0").to<double>(), 0.0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 }
 
 
@@ -717,25 +717,25 @@ BOOST_AUTO_TEST_CASE(ZeroTest15) {
   auto nr = Recog.number_text();
   BOOST_REQUIRE(std::equal(nr.begin(), nr.end(), "0.00"));
 
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE(Recog.to<int>() == 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   Recog.init("0.00");
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
   int value = 111;
   BOOST_REQUIRE(Recog.read(value) == OK);
   BOOST_REQUIRE_EQUAL(value, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   long long llvalue = 111;
   BOOST_REQUIRE(Recog.init("0.00").read(llvalue) == OK);
   BOOST_REQUIRE_EQUAL(llvalue, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE_EQUAL(Recog.init("0.00").to<double>(), 0.0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 }
 
 
@@ -817,25 +817,25 @@ BOOST_AUTO_TEST_CASE(ZeroTest16) {
   auto nr = Recog.number_text();
   BOOST_REQUIRE(std::equal(nr.begin(), nr.end(), "00.00"));
 
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE(Recog.to<int>() == 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   Recog.init("00.00");
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
   int value = 111;
   BOOST_REQUIRE(Recog.read(value) == OK);
   BOOST_REQUIRE_EQUAL(value, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   long long llvalue = 111;
   BOOST_REQUIRE(Recog.init("00.00").read(llvalue) == OK);
   BOOST_REQUIRE_EQUAL(llvalue, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE_EQUAL(Recog.init("00.00").to<double>(), 0.0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 }
 
 
@@ -917,25 +917,25 @@ BOOST_AUTO_TEST_CASE(ZeroTest17) {
   auto nr = Recog.number_text();
   BOOST_REQUIRE(std::equal(nr.begin(), nr.end(), "+0."));
 
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE(Recog.to<int>() == 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   Recog.init("+0.");
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
   int value = 111;
   BOOST_REQUIRE(Recog.read(value) == OK);
   BOOST_REQUIRE_EQUAL(value, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   long long llvalue = 111;
   BOOST_REQUIRE(Recog.init("+0.").read(llvalue) == OK);
   BOOST_REQUIRE_EQUAL(llvalue, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE_EQUAL(Recog.init("+0.").to<double>(), 0.0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 }
 
 
@@ -1017,25 +1017,25 @@ BOOST_AUTO_TEST_CASE(ZeroTest18) {
   auto nr = Recog.number_text();
   BOOST_REQUIRE(std::equal(nr.begin(), nr.end(), "+00."));
 
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE(Recog.to<int>() == 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   Recog.init("+00.");
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
   int value = 111;
   BOOST_REQUIRE(Recog.read(value) == OK);
   BOOST_REQUIRE_EQUAL(value, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   long long llvalue = 111;
   BOOST_REQUIRE(Recog.init("+00.").read(llvalue) == OK);
   BOOST_REQUIRE_EQUAL(llvalue, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE_EQUAL(Recog.init("+00.").to<double>(), 0.0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 }
 
 
@@ -1117,25 +1117,25 @@ BOOST_AUTO_TEST_CASE(ZeroTest19) {
   auto nr = Recog.number_text();
   BOOST_REQUIRE(std::equal(nr.begin(), nr.end(), "-00.00"));
 
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE(Recog.to<int>() == 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   Recog.init("-00.00");
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
   int value = 111;
   BOOST_REQUIRE(Recog.read(value) == OK);
   BOOST_REQUIRE_EQUAL(value, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   long long llvalue = 111;
   BOOST_REQUIRE(Recog.init("-00.00").read(llvalue) == OK);
   BOOST_REQUIRE_EQUAL(llvalue, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE_EQUAL(Recog.init("-00.00").to<double>(), 0.0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 }
 
 
@@ -1218,23 +1218,23 @@ BOOST_AUTO_TEST_CASE(ZeroTest20) {
   auto nr = Recog.number_text();
   BOOST_REQUIRE(std::equal(nr.begin(), nr.end(), "-.0"));
 
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE(Recog.to<int>() == 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   Recog.init(text);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
   int value = 111;
   BOOST_REQUIRE(Recog.read(value) == OK);
   BOOST_REQUIRE_EQUAL(value, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   long long llvalue = 111;
   BOOST_REQUIRE(Recog.init(text).read(llvalue) == OK);
   BOOST_REQUIRE_EQUAL(llvalue, 0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 
   BOOST_REQUIRE_EQUAL(Recog.init(text).to<double>(), 0.0);
-  BOOST_REQUIRE(Recog.get_status() == OK);
+  BOOST_REQUIRE(Recog.ok());
 }

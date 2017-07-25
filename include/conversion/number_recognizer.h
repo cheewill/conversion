@@ -1,6 +1,6 @@
 //===--- number_recognizer.h ------------------------------------*- C++ -*-===//
 //
-// Copyright(c) 2016, Serge Pavlov.
+// Copyright(c) 2016-2017, Serge Pavlov.
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -233,6 +233,12 @@ public:
 
   // Conversion results.
   Status get_status() const { return static_cast<Status>(status); }
+  bool ok() const { return status < OkCodes; }
+  bool overflow() const {
+    return status >= OkCodes && status <= DoubleOverflowNegative;
+  }
+  bool underflow() const { return status == DoubleUnderflow; }
+  bool bad() const { return status == NaN; }
 
 protected:
 
@@ -805,7 +811,10 @@ public:
     double dvalue = strto<double>(begin_number(), get_number_length());
     auto res = convert_to<NumType>(dvalue);
     value = res.value();
-    return static_cast<Status>(status = res.status());
+    status = res.status();
+    if (res.ok())
+      status = Status::OK;
+    return static_cast<Status>(status);
   }
 
   template<typename NumType>

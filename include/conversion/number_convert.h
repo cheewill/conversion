@@ -59,8 +59,7 @@ enum Status : unsigned {
 };
 
 
-/// \brief Helper class that represents both the converted value and the
-/// conversion status.
+/// \brief Represents both the converted value and the conversion status.
 ///
 /// \tparam NumType Type of the value stored in this class.
 ///
@@ -83,61 +82,196 @@ public:
 
 namespace internal {
 
-/// \brief Helper class used to convert value of one type to another when both
-/// source and target types are of the same kind (integer or floating).
+/// \brief Helper class used to convert value of an integer type to another
+/// integer type.
 ///
 /// \tparam DType Destination type.
 /// \tparam SType Source type.
-/// \tparam IsInt True if both source and destination types are integers.
-/// \trapam ToNarrow True if th destination type is narrower that the source.
+/// \tparam SignD True if destination type is signed.
+/// \tparam SignS True if source type is signed.
+/// \tparam Narrowing True if destination type has more bits in representation
+///                   than the source type.
 ///
 /// The class contains static method <tt>convert(const SType &x)</tt>, which
 /// converts value of \c x to the value of the destination type and returns it
 /// with the status of conversion.
 ///
-template<typename DType, typename SType, bool IsInt, bool ToNarrow>
-class Narrowing;
+template<typename DType, typename SType, bool SignD, bool SignS, bool Narrowing>
+class ConvertInts;
 
-// No narrowing.
-template<typename DType, typename SType, bool IsInt>
-class Narrowing<DType, SType, IsInt, false> {
-  static_assert(std::numeric_limits<DType>::is_integer ==
-                std::numeric_limits<SType>::is_integer,
-                "Must be both integers or both floats");
-public:
-  static constexpr Result<DType> convert(const SType &x) { return x; }
-};
-
-// Int narrowing.
+// Narrowing conversion between signed.
 template<typename DType, typename SType>
-class Narrowing<DType, SType, true, true> {
+class ConvertInts<DType, SType, true, true, true> {
   static_assert(std::numeric_limits<DType>::is_integer, "Must be integer");
   static_assert(std::numeric_limits<SType>::is_integer, "Must be integer");
+  static_assert(std::numeric_limits<DType>::is_signed, "Must be signed");
+  static_assert(std::numeric_limits<SType>::is_signed, "Must be signed");
   static_assert(std::numeric_limits<DType>::digits
                 < std::numeric_limits<SType>::digits, "Must be narrowing");
 public:
 
   static constexpr Result<DType> convert(const SType &x) {
-    return x > std::numeric_limits<DType>::max()
+    return x > static_cast<SType>(std::numeric_limits<DType>::max())
            ? Result<DType>(std::numeric_limits<DType>::max(),
                            Status::IntOverflow)
-           : (x < std::numeric_limits<DType>::min()
+           : (x < static_cast<SType>(std::numeric_limits<DType>::min())
               ? Result<DType>(std::numeric_limits<DType>::min(),
                               Status::IntOverflowNegative)
               : Result<DType>(static_cast<DType>(x)));
   }
 };
 
-// Float narrowing.
+// Non narrowing conversion between signed.
 template<typename DType, typename SType>
-class Narrowing<DType, SType, false, true> {
-  static_assert(!std::numeric_limits<DType>::is_integer, "Must be float");
-  static_assert(!std::numeric_limits<SType>::is_integer, "Must be float");
+class ConvertInts<DType, SType, true, true, false> {
+  static_assert(std::numeric_limits<DType>::is_integer, "Must be integer");
+  static_assert(std::numeric_limits<SType>::is_integer, "Must be integer");
+  static_assert(std::numeric_limits<DType>::is_signed, "Must be signed");
+  static_assert(std::numeric_limits<SType>::is_signed, "Must be signed");
+  static_assert(std::numeric_limits<DType>::digits
+                >= std::numeric_limits<SType>::digits, "Must not be narrowing");
+public:
+
+  static constexpr Result<DType> convert(const SType &x) {
+    return static_cast<DType>(x);
+  }
+};
+
+// Narrowing conversion from signed to unsigned.
+template<typename DType, typename SType>
+class ConvertInts<DType, SType, false, true, true> {
+  static_assert(std::numeric_limits<DType>::is_integer, "Must be integer");
+  static_assert(std::numeric_limits<SType>::is_integer, "Must be integer");
+  static_assert(!std::numeric_limits<DType>::is_signed, "Must be unsigned");
+  static_assert(std::numeric_limits<SType>::is_signed, "Must be signed");
   static_assert(std::numeric_limits<DType>::digits
                 < std::numeric_limits<SType>::digits, "Must be narrowing");
 public:
 
   static constexpr Result<DType> convert(const SType &x) {
+    return x < 0
+      ? Result<DType>(0, Status::IntOverflowNegative)
+      : (x > static_cast<SType>(std::numeric_limits<DType>::max()))
+        ? Result<DType>(std::numeric_limits<DType>::max(), Status::IntOverflow)
+        : Result<DType>(static_cast<DType>(x));
+  }
+};
+
+// Non-narrowing conversion from signed to unsigned.
+template<typename DType, typename SType>
+class ConvertInts<DType, SType, false, true, false> {
+  static_assert(std::numeric_limits<DType>::is_integer, "Must be integer");
+  static_assert(std::numeric_limits<SType>::is_integer, "Must be integer");
+  static_assert(!std::numeric_limits<DType>::is_signed, "Must be unsigned");
+  static_assert(std::numeric_limits<SType>::is_signed, "Must be signed");
+  static_assert(std::numeric_limits<DType>::digits
+                >= std::numeric_limits<SType>::digits, "Must not be narrowing");
+public:
+
+  static constexpr Result<DType> convert(const SType &x) {
+    return x < 0
+      ? Result<DType>(0, Status::IntOverflowNegative)
+      : Result<DType>(static_cast<DType>(x));
+  }
+};
+
+// Narrowing conversion between unsigned.
+template<typename DType, typename SType>
+class ConvertInts<DType, SType, false, false, true> {
+  static_assert(std::numeric_limits<DType>::is_integer, "Must be integer");
+  static_assert(std::numeric_limits<SType>::is_integer, "Must be integer");
+  static_assert(!std::numeric_limits<DType>::is_signed, "Must be unsigned");
+  static_assert(!std::numeric_limits<SType>::is_signed, "Must be unsigned");
+  static_assert(std::numeric_limits<DType>::digits
+                < std::numeric_limits<SType>::digits, "Must be narrowing");
+public:
+
+  static constexpr Result<DType> convert(const SType &x) {
+    return x > static_cast<SType>(std::numeric_limits<DType>::max())
+      ? Result<DType>(std::numeric_limits<DType>::max(),
+                      Status::IntOverflow)
+      : Result<DType>(static_cast<DType>(x));
+  }
+};
+
+// Non narrowing conversion between unsigned.
+template<typename DType, typename SType>
+class ConvertInts<DType, SType, false, false, false> {
+  static_assert(std::numeric_limits<DType>::is_integer, "Must be integer");
+  static_assert(std::numeric_limits<SType>::is_integer, "Must be integer");
+  static_assert(!std::numeric_limits<DType>::is_signed, "Must be unsigned");
+  static_assert(!std::numeric_limits<SType>::is_signed, "Must be unsigned");
+  static_assert(std::numeric_limits<DType>::digits
+                >= std::numeric_limits<SType>::digits, "Must not be narrowing");
+public:
+
+  static constexpr Result<DType> convert(const SType &x) {
+    return static_cast<DType>(x);
+  }
+};
+
+// Narrowing conversion from unsigned to signed.
+template<typename DType, typename SType>
+class ConvertInts<DType, SType, true, false, true> {
+  static_assert(std::numeric_limits<DType>::is_integer, "Must be integer");
+  static_assert(std::numeric_limits<SType>::is_integer, "Must be integer");
+  static_assert(std::numeric_limits<DType>::is_signed, "Must be signed");
+  static_assert(!std::numeric_limits<SType>::is_signed, "Must be unsigned");
+  static_assert(std::numeric_limits<DType>::digits
+                < std::numeric_limits<SType>::digits, "Must be narrowing");
+public:
+
+  static constexpr Result<DType> convert(const SType &x) {
+    return x > static_cast<SType>(std::numeric_limits<DType>::max())
+      ? Result<DType>(std::numeric_limits<DType>::max(), Status::IntOverflow)
+      : Result<DType>(static_cast<DType>(x));
+  }
+};
+
+// Non-narrowing conversion from unsigned to signed.
+template<typename DType, typename SType>
+class ConvertInts<DType, SType, true, false, false> {
+  static_assert(std::numeric_limits<DType>::is_integer, "Must be integer");
+  static_assert(std::numeric_limits<SType>::is_integer, "Must be integer");
+  static_assert(std::numeric_limits<DType>::is_signed, "Must be signed");
+  static_assert(!std::numeric_limits<SType>::is_signed, "Must be unsigned");
+  static_assert(std::numeric_limits<DType>::digits
+                >= std::numeric_limits<SType>::digits, "Must be narrowing");
+public:
+
+  static constexpr Result<DType> convert(const SType &x) {
+    return x > static_cast<SType>(std::numeric_limits<DType>::max())
+      ? Result<DType>(0, Status::IntOverflow)
+      : Result<DType>(static_cast<DType>(x));
+  }
+};
+
+
+/// \brief Helper class used to convert value of an float type to another
+/// float type.
+///
+/// \tparam DType Destination type.
+/// \tparam SType Source type.
+/// \tparam Narrowing True if destination type cannot represent all values of
+///                   the source type.
+///
+/// The class contains static method <tt>convert(const SType &x)</tt>, which
+/// converts value of \c x to the value of the destination type and returns it
+/// with the status of conversion.
+///
+template<typename DType, typename SType, bool Narrowing>
+class ConvertFloats;
+
+template<typename DType, typename SType>
+class ConvertFloats<DType, SType, true> {
+  static_assert(!std::numeric_limits<DType>::is_integer, "Must be float");
+  static_assert(!std::numeric_limits<SType>::is_integer, "Must be float");
+  static_assert(std::numeric_limits<DType>::max_exponent
+               < std::numeric_limits<SType>::max_exponent, "Must be narrowing");
+public:
+
+  static constexpr Result<DType> convert(const SType &x) {
+    // TODO: check precision loss?
     return x > static_cast<SType>(std::numeric_limits<DType>::max())
       ? Result<DType>(std::numeric_limits<DType>::max(),
                       Status::DoubleOverflow)
@@ -148,7 +282,22 @@ public:
   }
 };
 
-/// \brief Implements conversion float -> integer.
+template<typename DType, typename SType>
+class ConvertFloats<DType, SType, false> {
+  static_assert(!std::numeric_limits<DType>::is_integer, "Must be float");
+  static_assert(!std::numeric_limits<SType>::is_integer, "Must be float");
+  static_assert(std::numeric_limits<DType>::max_exponent
+                >= std::numeric_limits<SType>::max_exponent, "Must be narrowing");
+public:
+
+  static constexpr Result<DType> convert(const SType &x) {
+    // TODO: check precision loss?
+    return static_cast<DType>(x);
+  }
+};
+
+
+/// \brief Implements conversion float value to integer.
 ///
 /// \tparam DType Destination type.
 /// \tparam SType Source type.
@@ -168,12 +317,12 @@ public:
                       Status::IntOverflow)
       : (x < static_cast<SType>(std::numeric_limits<DType>::min())
          ? Result<DType>(std::numeric_limits<DType>::min(),
-                         Status::IntOverflow)
-         : Result<DType>(static_cast<DType>(x)));
+                         Status::IntOverflowNegative)
+         : Result<DType>(static_cast<DType>(x), Status::DoubleToInt));
   }
 };
 
-/// \brief Conversion integer -> float.
+/// \brief Conversion integer value to float.
 ///
 /// \tparam DType Destination type.
 /// \tparam SType Source type.
@@ -182,19 +331,17 @@ public:
 /// converts value of \c x to the value of the destination type and returns it
 /// with the status of conversion.
 ///
+/// We assume that absolute value of the integer is withing range of the
+/// float type.
+///
 template<typename DType, typename SType>
 class ConvertToFloat {
   static_assert(!std::numeric_limits<DType>::is_integer, "Must be float");
   static_assert(std::numeric_limits<SType>::is_integer, "Must be integer");
 public:
   static constexpr Result<DType> convert(const SType &x) {
-    return x > std::numeric_limits<DType>::max()
-      ? Result<DType>(std::numeric_limits<DType>::max(),
-                      Status::DoubleOverflow)
-      : (x < std::numeric_limits<DType>::min()
-         ? Result<DType>(std::numeric_limits<DType>::min(),
-                         Status::DoubleOverflow)
-         : Result<DType>(static_cast<DType>(x)));
+   // TODO: check precision loss?
+    return Result<DType>(static_cast<DType>(x));
   }
 };
 
@@ -211,7 +358,7 @@ public:
 /// with the status of conversion.
 ///
 /// This class dispatches call to \c convert to corresponding methods of classes
-/// Narrowing, ConvertToInt or ConvertToFloat.
+/// ConvertInts, ConvertFloats, ConvertToInt or ConvertToFloat.
 ///
 template<typename DType, typename SType, bool IntDest, bool IntSrc>
 class ConvertImpl;
@@ -223,7 +370,10 @@ class ConvertImpl<DType, SType, true, true> {
     std::numeric_limits<DType>::digits < std::numeric_limits<SType>::digits;
 public:
   static constexpr Result<DType> convert(const SType &x) {
-    return Narrowing<DType, SType, true, ToNarrow>::convert(x);
+    return ConvertInts<DType, SType,
+                       std::numeric_limits<DType>::is_signed,
+                       std::numeric_limits<SType>::is_signed,
+                       ToNarrow>::convert(x);
   }
 };
 
@@ -234,7 +384,7 @@ class ConvertImpl<DType, SType, false, false> {
     std::numeric_limits<DType>::digits < std::numeric_limits<SType>::digits;
 public:
   static constexpr Result<DType> convert(const SType &x) {
-    return Narrowing<DType, SType, false, ToNarrow>::convert(x);
+    return ConvertFloats<DType, SType, ToNarrow>::convert(x);
   }
 };
 
@@ -266,8 +416,8 @@ public:
 /// \tparam DestType Type of resulting value.
 ///
 /// \param x      Converted value.
-/// \param status Pointer to status value. May be nullptr.
-/// \returns Converted value with status of conversion.
+///
+/// \returns Pair of converted value and the status of conversion.
 //------------------------------------------------------------------------------
 template<typename DestType, typename SrcType>
 Result<DestType> convert_to(const SrcType &x) {

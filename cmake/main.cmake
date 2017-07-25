@@ -70,7 +70,7 @@ macro(make_component_project component_name)
   set(${project_name}_root ${CMAKE_CURRENT_SOURCE_DIR})
   set(${project_name}_include ${${project_name}_root}/include)
 
-  include_directories(${${project_name}_include})
+  include_directories(${COMPONENT_LIBRARY_DIR} ${${project_name}_include})
   if(NOT WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
   else()
